@@ -1,0 +1,26 @@
+/* Центрируем блок и добавляем отступы */
+.counter {
+    max-width: 400px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa; /* светлый фон bootstrap */
+    text-align: center;
+}
+
+/* Заголовок */
+.counter h2 {
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #343a40; /* темно-серый */
+}
+
+/* Кнопки */
+.counter button {
+    margin: 5px;
+}
+
+/* Если хотим кнопки в стиле Bootstrap */
+.counter .btn {
+    min-width: 60px;
+}
