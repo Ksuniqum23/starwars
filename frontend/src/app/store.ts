@@ -1,11 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice.ts"
 import listReducer from "../features/toDoList/toDoListSlice.ts"
+import peopleReducer from "../features/people/peopleSlice.ts"
 
 export const store = configureStore({
     reducer: {
         counter: counterReducer,
         toDoList: listReducer,
+        people: peopleReducer,
     },
 });
 

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: 'https://sw-next-api.vercel.app/api/v1/',
-    timeout: 1000,
+    baseURL: '/api/v1',
+    timeout: 5000,
 });
 
 export default api;
