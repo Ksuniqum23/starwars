@@ -2,14 +2,16 @@ import type {AppDispatch, RootState} from "../../app/store.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setActive} from "./peopleSlice.ts";
+import {useNavigate} from "react-router-dom";
 
 
 const PeopleList = () => {
     const { persons, loading, error, active } = useSelector((state: RootState) => state.people);
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     return (
         <div className="list-group">
-            <h2>LIST!!!</h2>
+            <h2>People</h2>
             {loading &&
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '5vh' }}>
                     <Spinner animation="border" variant="warning" />
@@ -24,6 +26,7 @@ const PeopleList = () => {
                        onClick={(e) => {
                            e.preventDefault();
                            dispatch(setActive(person.id));
+                           navigate('/people/' + person.id);
                        }}
                     >
                         {person.name}

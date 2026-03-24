@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 const PeoplePage = () => {
     const navigate = useNavigate();
+
     return (
         <div className="container">
            <PeopleList />

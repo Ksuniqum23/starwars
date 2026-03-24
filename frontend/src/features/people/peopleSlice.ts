@@ -1,31 +1,7 @@
 import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {getAllPeople} from "../../api/people.ts";
+import type { PeopleResponse, PeopleState } from "./types.ts";
 
-interface Person {
-    id: string;
-    name: string;
-}
-
-interface PeopleState {
-    persons: Person[];
-    loading: boolean;
-    error: string | null;
-    active: string | null;
-}
-
-// Тип для ответа API
-interface PeopleResponse {
-    page: number;
-    limit: number;
-    total: number;
-    pages: number;
-    results: {
-        id: string;
-        name: string;
-        // остальные поля есть, но мы их не используем
-        [key: string]: any;
-    }[];
-}
 
 const initialState: PeopleState = {
     persons: [],
@@ -51,10 +27,6 @@ const peopleSlice = createSlice({
     name: 'people',
     initialState,
     reducers: {
-        clearPeople:  (state) => {
-            state.persons = [];
-            state.error = null;
-        },
         setActive: (state, action: PayloadAction<string>) => {
             state.active = action.payload;
         }
@@ -68,8 +40,19 @@ const peopleSlice = createSlice({
             .addCase(fetchPeople.fulfilled, (state, action: PayloadAction<PeopleResponse>) => {
                 state.loading = false;
                 state.persons = action.payload.results.map(person => ({
+                    entityId: person.entityId,
                     id: person.id,
-                    name: person.name
+                    name: person.name,
+                    heightCm: person.heightCm,
+                    massKg: person.massKg,
+                    birthYearBBY: person.birthYearBBY,
+                    gender: person.gender,
+                    homeworld: person.homeworld,
+                    films: person.films,
+                    species: person.species,
+                    vehicles: person.vehicles,
+                    starships: person.starships,
+                    meta: person.meta
                 }));
                 state.active = state.persons[0].id;
             })
@@ -80,5 +63,5 @@ const peopleSlice = createSlice({
     },
 });
 
-export const { clearPeople, setActive } = peopleSlice.actions;
+export const { setActive } = peopleSlice.actions;
 export default peopleSlice.reducer;

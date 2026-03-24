@@ -12,6 +12,7 @@ function App() {
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/people" element={<PeoplePage />} />
+            <Route path="/people/:id" element={<PeoplePage />} />
         </Routes>
     </BrowserRouter>
   )
