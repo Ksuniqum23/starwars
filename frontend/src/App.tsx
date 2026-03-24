@@ -1,16 +1,19 @@
 import './App.css'
-import Counter from "./features/counter/Counter.tsx";
-import ToDoList from "./features/toDoList/toDoList.tsx";
-import People from "./pages/people.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import PeoplePage from "./pages/PeoplePage.tsx";
 
 function App() {
   return (
-    <>
-      <h1> HELLO STARWARS</h1>
-        <Counter />
-        <ToDoList />
-        <People />
-    </>
+    <BrowserRouter>
+        <Link to="/">
+            <h1>HELLO STARWARS</h1>
+        </Link>
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/people" element={<PeoplePage />} />
+        </Routes>
+    </BrowserRouter>
   )
 }
 
