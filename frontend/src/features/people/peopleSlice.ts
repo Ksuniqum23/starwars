@@ -10,6 +10,7 @@ interface PeopleState {
     persons: Person[];
     loading: boolean;
     error: string | null;
+    active: string | null;
 }
 
 // Тип для ответа API
@@ -30,6 +31,7 @@ const initialState: PeopleState = {
     persons: [],
     loading: false,
     error: null,
+    active: null
 }
 
 export const fetchPeople = createAsyncThunk(
@@ -37,6 +39,7 @@ export const fetchPeople = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await getAllPeople();
+            console.log(response);
             return response.data as PeopleResponse;
         } catch (error: any) {
             return rejectWithValue(error.message);
@@ -51,6 +54,9 @@ const peopleSlice = createSlice({
         clearPeople:  (state) => {
             state.persons = [];
             state.error = null;
+        },
+        setActive: (state, action: PayloadAction<string>) => {
+            state.active = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -65,6 +71,7 @@ const peopleSlice = createSlice({
                     id: person.id,
                     name: person.name
                 }));
+                state.active = state.persons[0].id;
             })
             .addCase(fetchPeople.rejected, (state, action) => {
                 state.loading = false;
@@ -73,5 +80,5 @@ const peopleSlice = createSlice({
     },
 });
 
-export const { clearPeople } = peopleSlice.actions;
+export const { clearPeople, setActive } = peopleSlice.actions;
 export default peopleSlice.reducer;

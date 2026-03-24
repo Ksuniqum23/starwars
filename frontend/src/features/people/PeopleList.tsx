@@ -1,17 +1,33 @@
-import type { RootState} from "../../app/store.ts";
-import { useSelector} from "react-redux";
+import type {AppDispatch, RootState} from "../../app/store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {Spinner} from "react-bootstrap";
+import {setActive} from "./peopleSlice.ts";
+
 
 const PeopleList = () => {
-    const { persons, loading, error } = useSelector((state: RootState) => state.people);
-
+    const { persons, loading, error, active } = useSelector((state: RootState) => state.people);
+    const dispatch = useDispatch<AppDispatch>();
     return (
         <div className="list-group">
             <h2>LIST!!!</h2>
-            {loading && <div>Loading...</div>}
+            {loading &&
+                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '5vh' }}>
+                    <Spinner animation="border" variant="warning" />
+                </div>
+            }
             {error && <div>Error: {error}</div>}
             {persons.length > 0 && persons.map((person) => {
                 return (
-                    <a href="#" key={person.id} className="list-group-item list-group-item-action">{person.name}</a>
+                    <a href="#"
+                       key={person.id}
+                       className={`list-group-item list-group-item-action ${active ===  person.id ? "active" : ""}`}
+                       onClick={(e) => {
+                           e.preventDefault();
+                           dispatch(setActive(person.id));
+                       }}
+                    >
+                        {person.name}
+                    </a>
                 )
             })}
         </div>
