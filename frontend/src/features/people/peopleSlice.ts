@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {getAllPeople} from "../../api/people.ts";
+import {getAllPeople} from "../../api/peopleApi.ts";
 import type { PeopleResponse, PeopleState } from "./types.ts";
 
 
 const initialState: PeopleState = {
-    persons: [],
+    persons: {},
+    order: [],
     loading: false,
     error: null,
-    active: null
 }
 
 export const fetchPeople = createAsyncThunk(
@@ -27,9 +27,7 @@ const peopleSlice = createSlice({
     name: 'people',
     initialState,
     reducers: {
-        setActive: (state, action: PayloadAction<string>) => {
-            state.active = action.payload;
-        }
+
     },
     extraReducers: (builder) => {
         builder
@@ -39,22 +37,26 @@ const peopleSlice = createSlice({
             })
             .addCase(fetchPeople.fulfilled, (state, action: PayloadAction<PeopleResponse>) => {
                 state.loading = false;
-                state.persons = action.payload.results.map(person => ({
-                    entityId: person.entityId,
-                    id: person.id,
-                    name: person.name,
-                    heightCm: person.heightCm,
-                    massKg: person.massKg,
-                    birthYearBBY: person.birthYearBBY,
-                    gender: person.gender,
-                    homeworld: person.homeworld,
-                    films: person.films,
-                    species: person.species,
-                    vehicles: person.vehicles,
-                    starships: person.starships,
-                    meta: person.meta
-                }));
-                state.active = state.persons[0].id;
+                state.order = [];
+                action.payload.results.map(person => {
+                    state.persons[person.id] = {
+                        entityId: person.entityId,
+                        id: person.id,
+                        name: person.name,
+                        heightCm: person.heightCm,
+                        massKg: person.massKg,
+                        birthYearBBY: person.birthYearBBY,
+                        gender: person.gender,
+                        homeworld: person.homeworld,
+                        films: person.films,
+                        species: person.species,
+                        vehicles: person.vehicles,
+                        starships: person.starships,
+                        meta: person.meta
+                    };
+                    state.order.push(person.id);
+                });
+                // state.active = state.order[0];
             })
             .addCase(fetchPeople.rejected, (state, action) => {
                 state.loading = false;
@@ -63,5 +65,4 @@ const peopleSlice = createSlice({
     },
 });
 
-export const { setActive } = peopleSlice.actions;
 export default peopleSlice.reducer;

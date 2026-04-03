@@ -1,31 +1,38 @@
 import type {AppDispatch, RootState} from "../../app/store.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {setActive} from "./peopleSlice.ts";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import {fetchPeople} from "./peopleSlice.ts";
+import type {Person} from "./types.ts";
 
 
-const PeopleList = () => {
-    const { persons, loading, error, active } = useSelector((state: RootState) => state.people);
+const PeopleList = ({ activePerson }: { activePerson: Person | null }) => {
+    const { persons, loading, error, order } = useSelector((state: RootState) => state.people);
     const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        if (order.length === 0 && !loading) {
+            dispatch(fetchPeople());
+        }
+    }, [order.length, loading, error]);
     const navigate = useNavigate();
+    console.log('peopleList loading - active person = ', activePerson);
     return (
         <div className="list-group">
-            <h2>People</h2>
             {loading &&
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '5vh' }}>
                     <Spinner animation="border" variant="warning" />
                 </div>
             }
             {error && <div>Error: {error}</div>}
-            {persons.length > 0 && persons.map((person) => {
+            {order.length > 0 && order.map((personID) => {
+                const person = persons[personID];
                 return (
                     <a href="#"
                        key={person.id}
-                       className={`list-group-item list-group-item-action ${active ===  person.id ? "active" : ""}`}
+                       className={`list-group-item list-group-item-action ${activePerson?.id ===  personID ? "active" : ""}`}
                        onClick={(e) => {
                            e.preventDefault();
-                           dispatch(setActive(person.id));
                            navigate('/people/' + person.id);
                        }}
                     >

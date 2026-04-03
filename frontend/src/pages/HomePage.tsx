@@ -9,7 +9,6 @@ const HomePage = () => {
     return (
         <div className="container">
             <button onClick={() => {
-                dispatch(fetchPeople());
                 navigate('/people');
             }}>
                 Fetch People

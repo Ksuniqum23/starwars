@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {getAllPeople} from "../../api/people.ts";
+import {getAllPeople} from "../../api/peopleApi.ts";
 
 interface Ship {
     id: string;

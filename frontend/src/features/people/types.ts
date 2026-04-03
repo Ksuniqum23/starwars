@@ -37,7 +37,10 @@ export interface Person {
 }
 
 export interface PeopleState {
-    persons: Person[];
+    persons: {
+        [key: string]: Person;
+    }
+    order: string[];
     loading: boolean;
     error: string | null;
     active: string | null;
